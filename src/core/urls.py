@@ -18,11 +18,11 @@ import ninja
 from django.contrib import admin
 from django.urls import path
 
-from minigame.api import emoji_hero_router
+from minigame.api import router
 
 api = ninja.NinjaAPI(docs=ninja.Swagger())
 
-api.add_router('emoji_hero', emoji_hero_router)
+api.add_router('emoji_hero', router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -6,11 +6,9 @@ import ninja
 from minigame.models import EmojiHero
 from minigame.schemas.emoji_hero import EmojiHeroSchemaOut
 
-# Create your views here.
-
-emoji_hero_router = ninja.Router(tags=['Emoji Hero'])
+router = ninja.Router(tags=['Match'])
 
 
-@emoji_hero_router.get('/', response=List[EmojiHeroSchemaOut])
+@router.post('/', response=List[EmojiHeroSchemaOut])
 def get_emoji_hero(request):
     return EmojiHero.objects.all()

@@ -7,6 +7,7 @@ from utils.models import UserStampedModel, TimeStampedModel
 
 class MinigameType(models.TextChoices):
     EMOJI = 'emoji'
+    QUOTE = 'quote'
 
 
 class MatchDifficulty(models.TextChoices):
@@ -21,7 +22,6 @@ class MatchStatus(models.TextChoices):
 
 class MatchAttempt(TimeStampedModel, UserStampedModel):
     hero = models.ForeignKey('hero.Hero', on_delete=models.CASCADE)
-    score = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='%(class)s_created')
 
@@ -30,7 +30,7 @@ class Match(TimeStampedModel, UserStampedModel):
     status = models.CharField(choices=MatchStatus.choices, default=MatchStatus.STARTED)
     difficulty = models.CharField(choices=MatchDifficulty.choices, default=MatchDifficulty.EASY)
     type = models.CharField(choices=MinigameType.choices)
-    minigame_id = models.IntegerField()
+    minigame = models.IntegerField()
     score = models.IntegerField(default=0)
     attempts = models.ManyToManyField(MatchAttempt)
     attempt_count = models.IntegerField(default=5, help_text='Maximum number of attempts allowed per match')
@@ -53,6 +53,7 @@ class MinigameConfig(TimeStampedModel, UserStampedModel):
 
 class EmojiHero(TimeStampedModel, UserStampedModel):
     emojis = ArrayField(models.CharField(max_length=255))
+    difficulty = models.CharField(choices=MatchDifficulty.choices, default=MatchDifficulty.EASY)
     config = models.ForeignKey('minigame.MinigameConfig', on_delete=models.CASCADE)
     hero = models.ForeignKey('hero.Hero', on_delete=models.CASCADE)
 

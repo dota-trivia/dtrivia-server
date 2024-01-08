@@ -1,13 +1,10 @@
 from django.contrib import admin
 from django import forms
-from emoji_picker.widgets import EmojiPickerTextInputAdmin
 
-from minigame.models import MinigameConfig, EmojiHero
+from minigame.models import MinigameConfig, EmojiHero, MatchAttempt, Match
 
 # Register your models here.
 admin.site.register(MinigameConfig)
 admin.site.register(EmojiHero)
-
-
-class EmojiHeroForm(forms.ModelForm):
-    emojis = forms.CharField(widget=EmojiPickerTextInputAdmin)
+admin.site.register(Match)
+admin.site.register(MatchAttempt)

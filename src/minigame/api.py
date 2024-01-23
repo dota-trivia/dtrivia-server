@@ -53,21 +53,23 @@ def attempt_emoji_hero(request, match_id: int, payload: MatchAttemptSchemaIn):
 
     hero = get_object_or_404(Hero, id=payload.hero)
 
-    match_attempt = MatchAttempt.objects.create(
+    MatchAttempt.objects.create(
         hero=hero,
         created_by=request.user,
     )
 
+    minigame = None
+
     if match.type == MinigameType.EMOJI:
         minigame = get_object_or_404(EmojiHero, id=match.minigame)
 
-        if payload.hero == minigame.hero.id:
-            score = (match.attempt_score / match.attempt_count) * (match.attempt_count - match.attempts.count())
-            match.score = score
-        else:
-            match.score = 0
+    if hasattr(minigame, 'hero') and payload.hero == minigame.hero.id:
+        score = (match.attempt_score / match.attempt_count) * max(match.attempt_count - match.attempts.count(), 0)
+        match.score = score
+    else:
+        match.score = 0
 
-        match.save()
+    match.save()
 
     return match
 

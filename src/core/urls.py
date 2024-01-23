@@ -22,7 +22,7 @@ from minigame.api import router
 
 api = ninja.NinjaAPI(docs=ninja.Swagger())
 
-api.add_router('emoji_hero', router)
+api.add_router('match', router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
